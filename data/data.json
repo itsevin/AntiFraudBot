@@ -1,0 +1,18 @@
+{
+    "knowledge_push": {
+        "group_list": [],
+        "friend_list": []
+    },
+    "example_push": {
+        "group_list": [],
+        "friend_list": []
+    },
+    "keyword_detection": {
+        "group_list": [],
+        "friend_list": []
+    },
+    "url_detection": {
+        "group_list": [],
+        "friend_list": []
+    }
+}

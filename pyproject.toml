@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "AntiFraudBot"
+version = "0.1.0"
+description = "基于 Nonebot2 和 onebotv11 的反诈机器人"
+authors = ["ITSevin <itsevin@qq.com>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.nonebot]
+adapters = [
+    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" }
+]
+plugins = ["nonebot_plugin_apscheduler"]
+plugin_dirs = ["src/plugins"]
+builtin_plugins = []
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+nonebot-adapter-onebot = ">=2.4.6"
+nonebot2 = {extras = ["fastapi"], version = ">=2.4.1"}
+httpx = ">=0.28.1"
+nonebot-plugin-apscheduler = ">=0.5.0"
+ujson = ">=5.10.0"
+pydantic = "1.10.21"
+alibabacloud-green20220302 = "2.2.0"
