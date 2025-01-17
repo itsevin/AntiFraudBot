@@ -23,7 +23,7 @@ _亮剑网络诈骗，共筑社区网盾_
 
 ## 简介
 
-一款基于 [Nonebot2](https://github.com/nonebot/nonebot2) 和 [OneBot 11](https://onebot.dev/) 的反诈机器人。
+一款基于 [NoneBot2](https://github.com/nonebot/nonebot2) 和 [OneBot 11](https://onebot.dev/) 的反诈机器人。
 
 ## 特色
 

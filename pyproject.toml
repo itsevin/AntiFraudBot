@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "AntiFraudBot"
 version = "0.1.0"
-description = "基于 Nonebot2 和 onebotv11 的反诈机器人"
+description = "基于 NoneVot2 和 OneBot 11 的反诈机器人"
 authors = ["ITSevin <itsevin@qq.com>"]
 license = "MIT"
 readme = "README.md"
