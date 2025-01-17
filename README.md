@@ -7,15 +7,15 @@ _亮剑网络诈骗，共筑社区网盾_
 
 <p align="center">
     <!-- GitHub主页 -->
-    <a style="margin-inline:5px" target="_blank" href="https://github.com/itsevin/sister_bot">
+    <a style="margin-inline:5px" target="_blank" href="https://github.com/itsevin/AntiFraudBot">
         <img src="https://img.shields.io/badge/GitHub-Home-blue?style=flat&logo=GitHub" title="Github主页">
-    </a>&emsp;
+    </a>
     <!-- py版本 -->
     <img src="https://img.shields.io/badge/Python-3.9+-blue" alt="python">
     <!-- nonebot版本 -->
     <a style="margin-inline:5px" target="_blank" href="https://github.com/nonebot/nonebot2">
         <img src="https://img.shields.io/badge/Nonebot2-Latest-blue" title="nonebot2">
-    </a>&emsp;
+    </a>
 </p>
 
 
@@ -47,7 +47,7 @@ _亮剑网络诈骗，共筑社区网盾_
 使用Git工具拉取文件：
 
 ```bash
-git clone https://github.com/itsevin/sister_bot.git
+git clone https://github.com/itsevin/AntiFraudBot.git
 ```
 
 或者直接下载源代码并解压
