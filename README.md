@@ -14,7 +14,7 @@ _亮剑网络诈骗，共筑社区网盾_
     <img src="https://img.shields.io/badge/Python-3.9+-blue" alt="python">
     <!-- nonebot版本 -->
     <a style="margin-inline:5px" target="_blank" href="https://github.com/nonebot/nonebot2">
-        <img src="https://img.shields.io/badge/Nonebot2-Latest-blue" title="nonebot2">
+        <img src="https://img.shields.io/badge/NoneBot2-Latest-blue" title="nonebot2">
     </a>
 </p>
 
