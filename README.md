@@ -3,7 +3,7 @@
 
 # AntiFraudBot
 
-_亮剑网络诈骗，共筑社区网盾_
+_明辨诈网，智护安宁_
 
 <p align="center">
     <!-- GitHub主页 -->
