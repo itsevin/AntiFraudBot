@@ -2,7 +2,7 @@ from nonebot import on_command, on_message, logger, get_plugin_config
 from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11 import Bot, Event
 from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN, GROUP_OWNER
-from nonebot.params import EventPlainText
+from nonebot.params import EventPlainText, CommandArg
 from nonebot.matcher import Matcher
 from utils.config import Config
 from utils.init import init_data
@@ -27,6 +27,20 @@ detection_open = on_command(
 
 detection_close = on_command(
     "关键词检测关闭",
+    priority=8,
+    block=True
+)
+
+keyword_add = on_command(
+    "添加敏感词",
+    permission=ADMIN,
+    priority=8,
+    block=True
+)
+
+keyword_remove = on_command(
+    "删除敏感词",
+    permission=ADMIN,
     priority=8,
     block=True
 )
@@ -205,3 +219,95 @@ async def _(bot: Bot, event: Event):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
     await detection_close.finish("当前会话关键词检测已关闭")
+
+
+@keyword_add.handle()
+async def _(bot: Bot, event: Event, args=CommandArg()):
+    keyword = args.extract_plain_text().strip()
+    if not keyword:
+        await keyword_add.finish("请输入要添加的敏感词，格式：添加敏感词 [词语]")
+        return
+    
+    keyword_file = Path("source/keyword.txt")
+    
+    # 读取现有关键词
+    existing_keywords = set()
+    if keyword_file.exists():
+        try:
+            with open(keyword_file, "r", encoding="utf-8") as f:
+                existing_keywords = {line.strip() for line in f if line.strip()}
+        except Exception as e:
+            logger.error(f"无法读取关键词文件: {e}")
+            await keyword_add.finish("读取关键词文件失败")
+            return
+    
+    # 检查是否已存在
+    if keyword in existing_keywords:
+        await keyword_add.finish(f"敏感词 '{keyword}' 已存在")
+        return
+    
+    # 添加新关键词
+    existing_keywords.add(keyword)
+    
+    try:
+        # 读取原文件保持顺序
+        original_keywords = []
+        if keyword_file.exists():
+            with open(keyword_file, "r", encoding="utf-8") as f:
+                original_keywords = [line.strip() for line in f if line.strip()]
+        
+        # 如果是新关键词，添加到末尾
+        if keyword not in original_keywords:
+            original_keywords.append(keyword)
+        
+        with open(keyword_file, "w", encoding="utf-8") as f:
+            for kw in original_keywords:
+                f.write(kw + "\n")
+    except Exception as e:
+        logger.error(f"无法写入关键词文件: {e}")
+        await keyword_add.finish("添加敏感词失败")
+        return
+    
+    await keyword_add.finish(f"成功添加敏感词：{keyword}")
+
+
+@keyword_remove.handle()
+async def _(bot: Bot, event: Event, args=CommandArg()):
+    keyword = args.extract_plain_text().strip()
+    if not keyword:
+        await keyword_remove.finish("请输入要删除的敏感词，格式：删除敏感词 [词语]")
+        return
+    
+    keyword_file = Path("source/keyword.txt")
+    
+    if not keyword_file.exists():
+        await keyword_remove.finish("关键词文件不存在")
+        return
+    
+    # 读取现有关键词，保持顺序
+    try:
+        with open(keyword_file, "r", encoding="utf-8") as f:
+            original_keywords = [line.strip() for line in f if line.strip()]
+    except Exception as e:
+        logger.error(f"无法读取关键词文件: {e}")
+        await keyword_remove.finish("读取关键词文件失败")
+        return
+    
+    # 检查是否存在
+    if keyword not in original_keywords:
+        await keyword_remove.finish(f"敏感词 '{keyword}' 不存在")
+        return
+    
+    # 删除关键词，保持其他关键词的原有顺序
+    original_keywords.remove(keyword)
+    
+    try:
+        with open(keyword_file, "w", encoding="utf-8") as f:
+            for kw in original_keywords:
+                f.write(kw + "\n")
+    except Exception as e:
+        logger.error(f"无法写入关键词文件: {e}")
+        await keyword_remove.finish("删除敏感词失败")
+        return
+    
+    await keyword_remove.finish(f"成功删除敏感词：{keyword}")

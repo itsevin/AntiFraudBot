@@ -144,3 +144,5 @@ dmypy.json
 # data.json
 .env.dev
 .env.prod1
+.env.prod2
+.env.prod3
