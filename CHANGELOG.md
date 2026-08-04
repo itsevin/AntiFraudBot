@@ -20,6 +20,11 @@ All notable changes are documented here. 本文件记录值得关注的行为、
 
 ### Fixed / 修复
 
+- Upgrade GitHub Actions to their current Node.js runtimes and remove the CI deprecation warnings.
+- Replace password examples that triggered false-positive secret findings while keeping the examples fail-closed.
+- Group routine Dependabot updates to reduce branch and pull-request noise.
+- Refresh supported backend and frontend dependencies, including Vue, Pinia, Tailwind CSS, NoneBot2, Uvicorn, and ujson.
+- Migrate the NoneBot CLI project metadata to its current grouped configuration format.
 - Redesign both README landing sections with the project logo, focused badges, a real dashboard screenshot, and readable navigation.
 - Remove obsolete slogan and organization-specific positioning from project documentation.
 - Report only the 588 deduplicated keyword entries in bundled-content summaries.

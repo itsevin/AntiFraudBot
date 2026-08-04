@@ -153,7 +153,7 @@ Copy-Item .env.prod.example .env.prod
 Set at least a strong dashboard password in `.env.prod`:
 
 ```dotenv
-WEB_ADMIN_PASSWORD=replace-with-at-least-12-characters
+WEB_ADMIN_PASSWORD=CHANGE_ME_USE_AT_LEAST_12_CHARACTERS
 ```
 
 The template pins the ORM database to `data/data.db`; keep `SQLALCHEMY_DATABASE_URL` configured.
