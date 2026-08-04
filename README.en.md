@@ -1,22 +1,16 @@
-<div align="center">
-
 # 🛡️ AntiFraudBot
 
-### An intelligent anti-fraud bot and security dashboard for QQ groups
-
-_Recognize suspicious messages. Protect communities with clarity._
-
-[![CI](https://github.com/itsevin/AntiFraudBot/actions/workflows/ci.yml/badge.svg)](https://github.com/itsevin/AntiFraudBot/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![NoneBot2](https://img.shields.io/badge/NoneBot2-2.4%2B-2C3E50)](https://nonebot.dev/)
-[![OneBot 11](https://img.shields.io/badge/OneBot-11-5C6BC0)](https://onebot.dev/)
+**An intelligent anti-fraud bot and security dashboard for QQ groups**
 
 [简体中文](README.md) · [English](README.en.md) · [Documentation](docs/en/README.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
 
-</div>
+| Runtime | Bot protocol | Services and data | Dashboard | License |
+|---|---|---|---|---|
+| Python 3.9–3.12 | NoneBot2 + OneBot 11 | FastAPI + SQLAlchemy + SQLite | Vue 3 + Vite | [MIT](LICENSE) |
 
 ---
+
+**Quick navigation:** [Features](#-feature-map) · [Architecture](#️-architecture) · [Setup](#-five-minute-setup) · [Commands](#-common-commands) · [Security](#-security-model) · [Development](#-development-checks)
 
 ## 🌟 Overview
 
@@ -24,7 +18,7 @@ AntiFraudBot is an open-source **NoneBot2 + OneBot 11** project that combines ch
 
 It is designed for:
 
-- 🏫 anti-fraud education in schools, communities, and nonprofit groups;
+- 🏫 anti-fraud education in schools and community settings;
 - 👥 keyword and suspicious-link assistance in QQ group chats;
 - 🧠 quizzes, daily check-ins, scores, and leaderboards;
 - 🤖 fraud-language analysis through OpenAI-compatible APIs;
@@ -52,7 +46,7 @@ It is designed for:
 
 - 🖼️ 53 anti-fraud knowledge images;
 - 📰 53 case-study text files;
-- 🔑 590 keyword source entries (588 unique entries after import deduplication);
+- 🔑 588 deduplicated keyword entries;
 - ❓ 126 quiz questions.
 
 Read [NOTICE.md](NOTICE.md) before redistributing bundled content. Deployers remain responsible for reviewing content against applicable law, platform rules, and local requirements.
@@ -227,8 +221,4 @@ Use AntiFraudBot only for lawful anti-fraud education, community protection, and
 
 ---
 
-<div align="center">
-
-If AntiFraudBot is useful to you, consider leaving a ⭐ and contributing practical improvements.
-
-</div>
+⭐ If AntiFraudBot is useful to you, consider leaving a Star and contributing practical, verifiable improvements through issues and pull requests.

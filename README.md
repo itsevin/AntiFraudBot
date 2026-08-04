@@ -1,22 +1,16 @@
-<div align="center">
-
 # 🛡️ AntiFraudBot
 
-### 面向 QQ 群聊的智能反诈机器人与安全数据平台
-
-_明辨诈网，智护安宁。_
-
-[![CI](https://github.com/itsevin/AntiFraudBot/actions/workflows/ci.yml/badge.svg)](https://github.com/itsevin/AntiFraudBot/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![NoneBot2](https://img.shields.io/badge/NoneBot2-2.4%2B-2C3E50)](https://nonebot.dev/)
-[![OneBot 11](https://img.shields.io/badge/OneBot-11-5C6BC0)](https://onebot.dev/)
+**面向 QQ 群聊的智能反诈机器人与安全数据平台**
 
 [简体中文](README.md) · [English](README.en.md) · [文档中心](docs/README.md) · [安全策略](SECURITY.md) · [参与贡献](CONTRIBUTING.md)
 
-</div>
+| 运行环境 | 机器人协议 | 服务与数据 | 管理端 | 许可证 |
+|---|---|---|---|---|
+| Python 3.9–3.12 | NoneBot2 + OneBot 11 | FastAPI + SQLAlchemy + SQLite | Vue 3 + Vite | [MIT](LICENSE) |
 
 ---
+
+**快速导航：** [功能全景](#-功能全景) · [系统架构](#️-系统架构) · [五分钟开始](#-五分钟开始) · [常用指令](#-常用指令) · [安全设计](#-安全设计) · [开发与验证](#-开发与验证)
 
 ## 🌟 项目简介
 
@@ -24,7 +18,7 @@ AntiFraudBot 是一个基于 **NoneBot2 + OneBot 11** 的开源反诈机器人�
 
 项目适合用于：
 
-- 🏫 校园、社团与公益组织的反诈宣传；
+- 🏫 校园与社区场景的反诈宣传；
 - 👥 QQ 群聊中的关键词与风险链接辅助检测；
 - 🧠 反诈知识问答、签到积分和排行榜互动；
 - 🤖 基于兼容 OpenAI API 的大模型进行诈骗话术分析；
@@ -54,7 +48,7 @@ AntiFraudBot 是一个基于 **NoneBot2 + OneBot 11** 的开源反诈机器人�
 
 - 🖼️ 53 张反诈知识图片；
 - 📰 53 份诈骗案例文本；
-- 🔑 590 条关键词源记录（去重后导入 588 条）；
+- 🔑 588 条去重关键词；
 - ❓ 126 道反诈问答题。
 
 内容素材的许可边界请阅读 [NOTICE.md](NOTICE.md)。部署者应根据当地法律、平台规则和实际使用场景审核内容。
@@ -241,8 +235,4 @@ npm run build
 
 ---
 
-<div align="center">
-
-如果 AntiFraudBot 对你有帮助，欢迎点亮 ⭐，也欢迎把真实的改进带回来。
-
-</div>
+⭐ 如果 AntiFraudBot 对你有帮助，欢迎点亮 Star，也欢迎通过 Issue 和 Pull Request 带来真实、可验证的改进。

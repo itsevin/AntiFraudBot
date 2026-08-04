@@ -20,6 +20,9 @@ All notable changes are documented here. 本文件记录值得关注的行为、
 
 ### Fixed / 修复
 
+- Replace fragile HTML and badge-based README headers with stable, readable Markdown navigation in both languages.
+- Remove obsolete slogan and organization-specific positioning from project documentation.
+- Report only the 588 deduplicated keyword entries in bundled-content summaries.
 - Add the missing NoneBot CLI runtime dependency.
 - Use a single `source/quiz_bank.json` path across code and documentation.
 - Restore real legacy JSON configuration migration behavior.
