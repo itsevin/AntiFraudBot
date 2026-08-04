@@ -48,7 +48,7 @@ Copy-Item .env.prod.example .env.prod
 Set a strong dashboard password:
 
 ```dotenv
-WEB_ADMIN_PASSWORD=replace-with-at-least-12-characters
+WEB_ADMIN_PASSWORD=CHANGE_ME_USE_AT_LEAST_12_CHARACTERS
 ```
 
 Keep the dashboard on loopback by default:

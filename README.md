@@ -159,7 +159,7 @@ cp .env.prod.example .env.prod
 至少修改 `.env.prod` 中的：
 
 ```dotenv
-WEB_ADMIN_PASSWORD=请设置至少12位的强密码
+WEB_ADMIN_PASSWORD=CHANGE_ME_USE_AT_LEAST_12_CHARACTERS
 ```
 
 模板已经把 ORM 数据库固定为 `data/data.db`，请不要删除 `SQLALCHEMY_DATABASE_URL`。

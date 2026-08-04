@@ -25,12 +25,18 @@ dependencies = [
 package-mode = false
 
 [tool.nonebot]
-adapters = [
-    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" }
-]
-plugins = ["nonebot_plugin_apscheduler"]
 plugin_dirs = ["src/plugins"]
 builtin_plugins = []
+
+[tool.nonebot.adapters]
+nonebot-adapter-onebot = [
+    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" }
+]
+"@local" = []
+
+[tool.nonebot.plugins]
+nonebot-plugin-apscheduler = ["nonebot_plugin_apscheduler"]
+"@local" = []
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0.0"
