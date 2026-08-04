@@ -1,5 +1,4 @@
-from nonebot import logger, get_plugin_config
-from utils.config import Config as utils_Config
+from nonebot import logger, get_driver
 
 from alibabacloud_green20220302.client import Client
 from alibabacloud_green20220302 import models
@@ -10,11 +9,11 @@ import json
 import uuid
 import time
 
-
-utils_config = get_plugin_config(utils_Config)
-
-access_key_id = utils_config.alibaba_cloud_acess_key_id
-access_key_secret = utils_config.alibaba_cloud_acess_key_secret
+# 从 nonebot 配置获取阿里云密钥
+driver = get_driver()
+config = driver.config
+access_key_id = getattr(config, 'alibaba_cloud_acess_key_id', '')
+access_key_secret = getattr(config, 'alibaba_cloud_acess_key_secret', '')
 
 endpoint = 'green-cip.cn-shanghai.aliyuncs.com'
 

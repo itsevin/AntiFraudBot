@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AntiFraudBot shield">
+  <defs>
+    <linearGradient id="shield-gradient" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0afff0"/>
+      <stop offset="1" stop-color="#1976d2"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 4 54 12v17c0 14-8.8 25.7-22 31C18.8 54.7 10 43 10 29V12L32 4Z" fill="url(#shield-gradient)"/>
+  <path d="M32 10 48 16v13c0 10.4-6.1 19.4-16 24-9.9-4.6-16-13.6-16-24V16l16-6Z" fill="#081426" fill-opacity=".72" stroke="#b8fffb" stroke-width="2"/>
+  <path d="m23 31 6 6 13-14" fill="none" stroke="#0afff0" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+</svg>

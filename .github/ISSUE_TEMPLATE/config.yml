@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔐 Security vulnerability / 安全漏洞
+    url: https://github.com/itsevin/AntiFraudBot/security/advisories/new
+    about: Please report vulnerabilities privately. 请勿公开披露安全漏洞。

@@ -139,10 +139,33 @@ dmypy.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
-# coustom
+# Custom Rules
 
-# data.json
-.env.dev
-.env.prod1
-.env.prod2
-.env.prod3
+# Sensitive Configs
+.env
+.env.prod
+.env.*
+!.env.example
+!.env.prod.example
+
+# Runtime Data
+data.db
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/.jwt_secret
+data/*.json.bak
+
+# Large/Temporary Files
+src.zip
+*.zip
+*.log
+logs/
+
+# Frontend Build Artifacts (redundant but safe)
+src/web/frontend_v2/node_modules/
+src/web/frontend_v2/dist/
+
+# Test / local audit artifacts
+.ruff_cache/
+.security-scan/

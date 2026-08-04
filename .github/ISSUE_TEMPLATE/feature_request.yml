@@ -1,0 +1,29 @@
+name: ✨ Feature request / 功能建议
+description: Propose an improvement with a clear user scenario. 描述清晰的用户场景和改进方案。
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: User scenario / 用户场景
+      description: Who needs this, and what problem are they trying to solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution / 建议方案
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives / 替代方案
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety / 安全确认
+      options:
+        - label: This request does not require publishing private data or credentials.
+          required: true

@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* Custom Theme Variables */
+@theme {
+  --color-cyber-black: #050a14;
+  --color-cyber-dark: #0a192f;
+  --color-cyber-blue: #00f3ff;
+  --color-cyber-cyan: #0afff0;
+  --color-cyber-pink: #ff00ff;
+  --color-alert-red: #ff2a2a;
+  --color-safe-green: #00ff41;
+}
+
+/* Custom Scrollbar for Terminal */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050a14;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e3a5f;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00f3ff;
+}
+
+body {
+  background-color: var(--color-cyber-black);
+  color: white;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background-color: rgba(10, 25, 47, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+}
+
+.terminal-text {
+  font-family: 'Share Tech Mono', monospace;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+/* Color Utilities */
+.bg-cyber-black {
+  background-color: var(--color-cyber-black);
+}
+
+.bg-cyber-dark {
+  background-color: var(--color-cyber-dark);
+}
+
+.text-cyber-cyan {
+  color: var(--color-cyber-cyan);
+}
+
+.text-cyber-blue {
+  color: var(--color-cyber-blue);
+}
+
+.text-cyber-pink {
+  color: var(--color-cyber-pink);
+}
+
+.text-alert-red {
+  color: var(--color-alert-red);
+}
+
+.text-safe-green {
+  color: var(--color-safe-green);
+}
+
+.border-cyan-500\/30 {
+  border-color: rgba(0, 243, 255, 0.3);
+}
+
+.border-cyan-500\/20 {
+  border-color: rgba(0, 243, 255, 0.2);
+}
+
+/* Markdown Report Styling */
+.markdown-report h1,
+.markdown-report h2,
+.markdown-report h3 {
+  color: var(--color-cyber-cyan);
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.markdown-report h1 {
+  font-size: 1.25rem;
+}
+
+.markdown-report h2 {
+  font-size: 1.1rem;
+}
+
+.markdown-report h3 {
+  font-size: 1rem;
+}
+
+.markdown-report p {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-report strong {
+  color: var(--color-cyber-blue);
+}
+
+.markdown-report ul,
+.markdown-report ol {
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-report li {
+  margin-bottom: 0.25rem;
+}

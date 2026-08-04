@@ -1,313 +1,139 @@
-from nonebot import on_command, on_message, logger, get_plugin_config
+from nonebot import on_command, on_message, logger, require
 from nonebot.permission import SUPERUSER
-from nonebot.adapters.onebot.v11 import Bot, Event
+from nonebot.adapters.onebot.v11 import Bot, Event, GroupMessageEvent, Message
 from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN, GROUP_OWNER
 from nonebot.params import EventPlainText, CommandArg
 from nonebot.matcher import Matcher
-from utils.config import Config
-from utils.init import init_data
 
-from pathlib import Path
-import ujson as json
+require("nonebot_plugin_orm")
+from nonebot_plugin_orm import async_scoped_session
 
+from src.database.crud import (
+    get_all_keywords,
+    add_keyword,
+    remove_keyword,
+    log_detection,
+    get_group_config,
+)
 
 ADMIN = GROUP_ADMIN | GROUP_OWNER | SUPERUSER
 
+# ==================== 事件响应器 ====================
 
-all_message = on_message(
-    block=False,
-    priority=13
-)
+# 消息监听（优先级设置较低，避免阻断其他命令）
+all_message = on_message(priority=15, block=False)
 
-detection_open = on_command(
-    "关键词检测开启",
-    priority=8,
-    block=True
-)
-
-detection_close = on_command(
-    "关键词检测关闭",
-    priority=8,
-    block=True
-)
-
-keyword_add = on_command(
-    "添加敏感词",
-    permission=ADMIN,
-    priority=8,
-    block=True
-)
-
-keyword_remove = on_command(
-    "删除敏感词",
-    permission=ADMIN,
-    priority=8,
-    block=True
-)
-
-
-config = get_plugin_config(Config)
-
-detection_group = config.keyword_detection_group
-detection_private = config.keyword_detection_private
+# 管理指令
+keyword_add = on_command("添加敏感词", permission=ADMIN, priority=5, block=True)
+keyword_remove = on_command("删除敏感词", permission=ADMIN, priority=5, block=True)
+keyword_list = on_command("敏感词列表", permission=ADMIN, priority=5, block=True)
 
 
 @all_message.handle()
-async def _(event: Event, matcher: Matcher, msg: str = EventPlainText()):
-    # 文本消息为空时结束处理
-    if not msg:
-        return
-    
-    # 未开启关键词检测时结束处理
-    id = event.get_session_id()
-    is_private = True
-    if '_' in id:  # 群聊情况下拆分出群聊 id
-        id = id.split("_")[1]
-        is_private = False
-    
-    try:
-        with open("data/data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except:
-        await init_data()
-        logger.warning("未找到 data/data.json 文件，已进行初始化生成")
-        with open("data/data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-    if is_private:
-        # 私聊处理
-        for single_friend in data['keyword_detection']['friend_list']:
-            if str(single_friend['id']) == str(id):
-                if not single_friend['keyword_detection']:
-                    return
-    else:
-        # 群聊处理
-        for single_group in data['keyword_detection']['group_list']:
-            if str(single_group['id']) == str(id):
-                if not single_group['keyword_detection']:
-                    return
-
-    # 读取关键词列表
-    keyword_file = Path("source/keyword.txt")
-    if not keyword_file.exists():
-        logger.error("关键词文件 source/keyword.txt 不存在！")
-        return
-    try:
-        with open(keyword_file, "r", encoding="utf-8") as f:
-            keywords = {line.strip() for line in f if line.strip()}
-    except Exception as e:
-        logger.error(f"无法读取关键词文件: {e}")
+async def _(
+    bot: Bot,
+    event: Event,
+    session: async_scoped_session,
+    matcher: Matcher,
+    msg: str = EventPlainText(),
+):
+    """处理消息监听与关键词检测"""
+    if not msg.strip():
         return
 
-    # 检查消息是否包含关键词
-    for keyword in keywords:
-        if keyword in msg:
-            await all_message.finish(f"检测到敏感词 {keyword} ，请谨防诈骗！！！")
-            matcher.stop_propagation()
+    # 0. 如果是发给机器人的消息（私聊或被@），则跳过检测
+    # 避免用户咨询诈骗问题时触发误报
+    if event.is_tome():
+        return
+
+    # 1. 检查功能开关
+    # 默认为开启，但在群聊中需检查群配置
+    is_enabled = True
+    group_id = None
+
+    if isinstance(event, GroupMessageEvent):
+        group_id = str(event.group_id)
+        config = await get_group_config(session, group_id)
+        if not config.keyword_detection:
+            is_enabled = False
+
+    # 暂不处理私聊的开关逻辑，默认开启或可扩展为用户表配置
+    # 如果已关闭，则直接返回
+    if not is_enabled:
+        return
+
+    # 2. 获取所有敏感词
+    keywords = await get_all_keywords(session)
+    if not keywords:
+        logger.debug("关键词检测: 敏感词库为空")
+        return
+
+    # 3. 匹配检测
+    matched_keyword = None
+    for kw in keywords:
+        if kw.word in msg:
+            matched_keyword = kw
             break
 
+    if matched_keyword:
+        # 提取字段值，避免 commit 后对象过期导致 LazyLoad 失败
+        matched_word = matched_keyword.word
+        matched_risk = matched_keyword.risk_level
 
-@detection_open.handle()
-async def _(bot: Bot, event: Event):
-    id = event.get_session_id()
-    is_private = True
-    if '_' in id:  # 群聊情况下拆分出群聊 id
-        id = id.split("_")[1]
-        is_private = False
+        # 记录日志 (风险等级用于计算防护指数)
+        await log_detection(
+            session=session,
+            user_id=event.get_user_id(),
+            keyword=matched_word,
+            message_content=msg,
+            group_id=group_id,
+            risk_level=matched_risk,
+        )
 
-    # 群聊情况下需要验证是否为管理员
-    if not is_private and not await ADMIN(bot, event):
-        await detection_open.finish("只有群主或管理员可以开启关键词检测")
-        return
-    
-    try:
-        with open("data/data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except:
-        await init_data()
-        logger.warning("未找到 data/data.json 文件，已进行初始化生成")
-        with open("data/data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-    if is_private:
-        #私聊处理
-        flag = False
-        for single_friend in data['keyword_detection']['friend_list']:
-            if str(single_friend['id']) == str(id):
-                flag = True
-                single_friend['keyword_detection'] = True  # 修改状态
-        if not flag:
-            data['keyword_detection']['friend_list'].append(
-                {
-                    "id": id,
-                    "keyword_detection": True
-                }
-            )
-    else:
-        # 群聊处理
-        flag = False
-        for single_group in data['keyword_detection']['group_list']:
-            if str(single_group['id']) == str(id):
-                flag = True
-                single_group['keyword_detection'] = True  # 修改状态
-        if not flag:
-            data['keyword_detection']['group_list'].append(
-                {
-                    "id": id,
-                    "keyword_detection": True
-                }
-            )
-
-    with open("data/data.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-
-    await detection_open.finish("当前会话关键词检测已开启")
-
-
-@detection_close.handle()
-async def _(bot: Bot, event: Event):
-    id = event.get_session_id()
-    is_private = True
-    if '_' in id:  # 群聊情况下拆分出群聊 id
-        id = id.split("_")[1]
-        is_private = False
-
-    # 群聊情况下需要验证是否为管理员
-    if not is_private and not await ADMIN(bot, event):
-        await detection_close.finish("只有群主或管理员可以关闭关键词检测")
-        return
-    
-    try:
-        with open("data/data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except:
-        await init_data()
-        logger.warning("未找到 data/data.json 文件，已进行初始化生成")
-        with open("data/data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-    if is_private:
-        #私聊处理
-        flag = False
-        for single_friend in data['keyword_detection']['friend_list']:
-            if str(single_friend['id']) == str(id):
-                flag = True
-                single_friend['keyword_detection'] = False  # 修改状态
-        if not flag:
-            data['keyword_detection']['friend_list'].append(
-                {
-                    "id": id,
-                    "keyword_detection": False
-                }
-            )
-    else:
-        # 群聊处理
-        flag = False
-        for single_group in data['keyword_detection']['group_list']:
-            if str(single_group['id']) == str(id):
-                flag = True
-                single_group['keyword_detection'] = False  # 修改状态
-        if not flag:
-            data['keyword_detection']['group_list'].append(
-                {
-                    "id": id,
-                    "keyword_detection": False
-                }
-            )
-
-    with open("data/data.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-
-    await detection_close.finish("当前会话关键词检测已关闭")
+        # 发送警告
+        warning_msg = f"⚠️ 警告：检测到敏感词【{matched_word}】\n请注意甄别信息真伪，谨防诈骗！"
+        await all_message.finish(warning_msg)
+        matcher.stop_propagation()
 
 
 @keyword_add.handle()
-async def _(bot: Bot, event: Event, args=CommandArg()):
-    keyword = args.extract_plain_text().strip()
-    if not keyword:
-        await keyword_add.finish("请输入要添加的敏感词，格式：添加敏感词 [词语]")
-        return
-    
-    keyword_file = Path("source/keyword.txt")
-    
-    # 读取现有关键词
-    existing_keywords = set()
-    if keyword_file.exists():
-        try:
-            with open(keyword_file, "r", encoding="utf-8") as f:
-                existing_keywords = {line.strip() for line in f if line.strip()}
-        except Exception as e:
-            logger.error(f"无法读取关键词文件: {e}")
-            await keyword_add.finish("读取关键词文件失败")
-            return
-    
-    # 检查是否已存在
-    if keyword in existing_keywords:
-        await keyword_add.finish(f"敏感词 '{keyword}' 已存在")
-        return
-    
-    # 添加新关键词
-    existing_keywords.add(keyword)
-    
-    try:
-        # 读取原文件保持顺序
-        original_keywords = []
-        if keyword_file.exists():
-            with open(keyword_file, "r", encoding="utf-8") as f:
-                original_keywords = [line.strip() for line in f if line.strip()]
-        
-        # 如果是新关键词，添加到末尾
-        if keyword not in original_keywords:
-            original_keywords.append(keyword)
-        
-        with open(keyword_file, "w", encoding="utf-8") as f:
-            for kw in original_keywords:
-                f.write(kw + "\n")
-    except Exception as e:
-        logger.error(f"无法写入关键词文件: {e}")
-        await keyword_add.finish("添加敏感词失败")
-        return
-    
-    await keyword_add.finish(f"成功添加敏感词：{keyword}")
+async def _(session: async_scoped_session, args: Message = CommandArg()):
+    """添加敏感词"""
+    word = args.extract_plain_text().strip()
+    if not word:
+        await keyword_add.finish("📝 用法：添加敏感词 [词语]")
+
+    success, message = await add_keyword(session, word)
+    if success:
+        await keyword_add.finish(f"✅ {message}")
+    else:
+        await keyword_add.finish(f"⚠️ {message}")
 
 
 @keyword_remove.handle()
-async def _(bot: Bot, event: Event, args=CommandArg()):
-    keyword = args.extract_plain_text().strip()
-    if not keyword:
-        await keyword_remove.finish("请输入要删除的敏感词，格式：删除敏感词 [词语]")
-        return
-    
-    keyword_file = Path("source/keyword.txt")
-    
-    if not keyword_file.exists():
-        await keyword_remove.finish("关键词文件不存在")
-        return
-    
-    # 读取现有关键词，保持顺序
-    try:
-        with open(keyword_file, "r", encoding="utf-8") as f:
-            original_keywords = [line.strip() for line in f if line.strip()]
-    except Exception as e:
-        logger.error(f"无法读取关键词文件: {e}")
-        await keyword_remove.finish("读取关键词文件失败")
-        return
-    
-    # 检查是否存在
-    if keyword not in original_keywords:
-        await keyword_remove.finish(f"敏感词 '{keyword}' 不存在")
-        return
-    
-    # 删除关键词，保持其他关键词的原有顺序
-    original_keywords.remove(keyword)
-    
-    try:
-        with open(keyword_file, "w", encoding="utf-8") as f:
-            for kw in original_keywords:
-                f.write(kw + "\n")
-    except Exception as e:
-        logger.error(f"无法写入关键词文件: {e}")
-        await keyword_remove.finish("删除敏感词失败")
-        return
-    
-    await keyword_remove.finish(f"成功删除敏感词：{keyword}")
+async def _(session: async_scoped_session, args: Message = CommandArg()):
+    """删除敏感词"""
+    word = args.extract_plain_text().strip()
+    if not word:
+        await keyword_remove.finish("📝 用法：删除敏感词 [词语]")
+
+    success, message = await remove_keyword(session, word)
+    if success:
+        await keyword_remove.finish(f"✅ {message}")
+    else:
+        await keyword_remove.finish(f"⚠️ {message}")
+
+
+@keyword_list.handle()
+async def _(session: async_scoped_session):
+    """查看敏感词列表"""
+    keywords = await get_all_keywords(session)
+    if not keywords:
+        await keyword_list.finish("📭 当前暂无敏感词")
+
+    # 限制显示数量，防止刷屏
+    display_list = [kw.word for kw in keywords]
+    count = len(display_list)
+
+    msg = f"📋 敏感词列表 ({count}个):\n\n" + "、".join(display_list)
+    await keyword_list.finish(msg)
