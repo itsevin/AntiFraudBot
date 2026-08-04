@@ -4,6 +4,10 @@ All notable changes are documented here. 本文件记录值得关注的行为、
 
 ## [Unreleased]
 
+No unreleased changes yet. 暂无未发布变更。
+
+## [0.1.0] - 2026-08-04
+
 ### Security / 安全
 
 - Require JWT authentication for all dashboard business APIs.
@@ -35,3 +39,6 @@ All notable changes are documented here. 本文件记录值得关注的行为、
 - Add a temporary-database schema regression test for initialization.
 - Repair the dashboard layout for 390 px mobile viewports without changing the desktop composition.
 - Refresh the frontend lockfile to resolve all reported npm dependency vulnerabilities.
+
+[Unreleased]: https://github.com/itsevin/AntiFraudBot/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/itsevin/AntiFraudBot/releases/tag/v0.1.0
