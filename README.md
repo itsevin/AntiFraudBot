@@ -1,20 +1,58 @@
-# 🛡️ AntiFraudBot
+<p align="center">
+  <img src="src/web/frontend_v2/public/shield.svg" width="96" alt="AntiFraudBot shield logo" />
+</p>
 
-**面向 QQ 群聊的智能反诈机器人与安全数据平台**
+<h1 align="center">AntiFraudBot</h1>
 
-[简体中文](README.md) · [English](README.en.md) · [文档中心](docs/README.md) · [安全策略](SECURITY.md) · [参与贡献](CONTRIBUTING.md)
+<p align="center">
+  <strong>面向 QQ 群聊的智能反诈机器人与安全态势平台</strong><br />
+  <span>把风险检测、知识传播、互动答题、AI 分析与可视化研判连接成一套可部署、可扩展的反诈工具。</span>
+</p>
 
-| 运行环境 | 机器人协议 | 服务与数据 | 管理端 | 许可证 |
-|---|---|---|---|---|
-| Python 3.9–3.12 | NoneBot2 + OneBot 11 | FastAPI + SQLAlchemy + SQLite | Vue 3 + Vite | [MIT](LICENSE) |
+<p align="center">
+  <a href="README.md"><strong>简体中文</strong></a>
+  ·
+  <a href="README.en.md">English</a>
+  ·
+  <a href="docs/README.md">文档中心</a>
+  ·
+  <a href="SECURITY.md">安全策略</a>
+  ·
+  <a href="CONTRIBUTING.md">参与贡献</a>
+</p>
 
----
+<p align="center">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-0f766e" /></a>
+  <img alt="Python" src="https://img.shields.io/badge/python-3.9--3.12-111827?logo=python&amp;logoColor=white" />
+  <img alt="Bot framework" src="https://img.shields.io/badge/bot-NoneBot2%20%2B%20OneBot%2011-111827" />
+  <img alt="Dashboard" src="https://img.shields.io/badge/dashboard-Vue%203%20%2B%20Vite-0f766e" />
+  <img alt="Security" src="https://img.shields.io/badge/security-JWT%20%2B%20CORS-0891b2" />
+  <img alt="Validation" src="https://img.shields.io/badge/validation-pytest%20%2B%20build-14b8a6" />
+</p>
 
-**快速导航：** [功能全景](#-功能全景) · [系统架构](#️-系统架构) · [五分钟开始](#-五分钟开始) · [常用指令](#-常用指令) · [安全设计](#-安全设计) · [开发与验证](#-开发与验证)
+![AntiFraudBot 反诈指挥中心](docs/assets/dashboard-overview.jpg)
 
-## 🌟 项目简介
+## 目录
 
-AntiFraudBot 是一个基于 **NoneBot2 + OneBot 11** 的开源反诈机器人。它将群聊内容检测、反诈知识传播、互动答题、可选的大模型分析和 Web 安全态势大屏组合在一个可扩展项目中。
+- [为什么需要它](#为什么需要它)
+- [功能全景](#功能全景)
+- [内容资源](#内容资源)
+- [系统架构](#系统架构)
+- [五分钟开始](#五分钟开始)
+- [常用指令](#常用指令)
+- [安全设计](#安全设计)
+- [开发与验证](#开发与验证)
+- [参与贡献](#参与贡献)
+- [后续方向](#后续方向)
+- [许可证与声明](#许可证与声明)
+
+## 为什么需要它
+
+群聊里的诈骗风险通常不是一道单选题：可疑关键词、伪装链接、诱导话术和反诈知识缺口往往同时出现。只做一次关键词提醒，难以覆盖持续宣传、互动学习、事件留痕和后续研判。
+
+AntiFraudBot 将这些环节放进同一套可扩展系统：机器人负责在群聊中检测和互动，数据库保留结构化记录，安全 API 向 Web 指挥中心提供脱敏后的趋势与风险信息；外部 AI 和 URL 审核服务则保持可选，不配置密钥也不会阻塞基础能力。
+
+> 🛡️ 项目的目标不是替代公安机关、银行或平台风控，而是让群聊中的风险提醒、反诈教育和态势观察更及时、更连续、更容易部署。
 
 项目适合用于：
 
@@ -28,7 +66,7 @@ AntiFraudBot 是一个基于 **NoneBot2 + OneBot 11** 的开源反诈机器人�
 > [!IMPORTANT]
 > AntiFraudBot 是辅助识别工具，不替代公安机关、银行、平台风控或专业法律意见。涉及转账、验证码、账号控制权时，请优先停止操作并通过官方渠道核实。
 
-## ✨ 功能全景
+## 功能全景
 
 | 模块 | 能力 | 状态 |
 |---|---|---|
@@ -42,7 +80,7 @@ AntiFraudBot 是一个基于 **NoneBot2 + OneBot 11** 的开源反诈机器人�
 | 🛠️ 管理 API | 敏感词和题库的查询、添加、更新与停用 | ✅ 已实现；暂未提供完整管理 UI |
 | 📈 趋势预测 | 用于大屏展示的确定性启发式曲线 | 🟡 展示功能，不是训练模型预测 |
 
-### 内容资源
+## 内容资源
 
 当前仓库包含：
 
@@ -53,7 +91,7 @@ AntiFraudBot 是一个基于 **NoneBot2 + OneBot 11** 的开源反诈机器人�
 
 内容素材的许可边界请阅读 [NOTICE.md](NOTICE.md)。部署者应根据当地法律、平台规则和实际使用场景审核内容。
 
-## 🏗️ 系统架构
+## 系统架构
 
 ```mermaid
 flowchart LR
@@ -84,7 +122,7 @@ AntiFraudBot/
 └── .env.prod.example             # 完整生产配置模板
 ```
 
-## 🚀 五分钟开始
+## 五分钟开始
 
 ### 1. 准备环境
 
@@ -159,7 +197,7 @@ Web 服务默认只监听本机。公网部署请使用 HTTPS 反向代理，并
 
 更完整的流程见 [安装与部署](docs/安装部署.md)。
 
-## 🎮 常用指令
+## 常用指令
 
 实际命令前缀由 `COMMAND_START` 决定。默认配置下可以直接发送：
 
@@ -177,7 +215,7 @@ Web 服务默认只监听本机。公网部署请使用 HTTPS 反向代理，并
 
 完整指令和权限规则见 [使用指南](docs/使用指南.md)。
 
-## 🔐 安全设计
+## 安全设计
 
 - 所有后台业务 API 都需要有效 JWT；登录接口是唯一匿名入口。
 - 后台密码缺失、长度不足或仍为常见默认值时，登录会拒绝服务。
@@ -189,7 +227,7 @@ Web 服务默认只监听本机。公网部署请使用 HTTPS 反向代理，并
 
 发现漏洞时请不要创建公开 Issue，请阅读 [SECURITY.md](SECURITY.md) 并使用 GitHub Private Vulnerability Reporting。
 
-## 🧪 开发与验证
+## 开发与验证
 
 ```bash
 # 后端回归测试
@@ -209,7 +247,7 @@ npm run build
 
 详细架构、API 和插件开发说明见 [开发者文档](docs/开发者文档.md)。
 
-## 🤝 参与贡献
+## 参与贡献
 
 欢迎修复缺陷、补充题库、改进反诈内容、完善文档或增加适配器。提交前请：
 
@@ -218,7 +256,7 @@ npm run build
 3. 为行为变化补充测试和中英文文档；
 4. 在 Pull Request 中说明验证命令与结果。
 
-## 🗺️ 后续方向
+## 后续方向
 
 - [ ] 完整的敏感词与题库 Web 管理界面；
 - [ ] 可插拔的 OCR 与向量知识库；
@@ -227,7 +265,7 @@ npm run build
 - [ ] 可复现的检测效果评估数据集；
 - [ ] 容器化部署方案（完成真实验证后再提供）。
 
-## 📜 许可证与声明
+## 许可证与声明
 
 项目代码使用 [MIT License](LICENSE)。内容素材、第三方服务和平台使用规则另见 [NOTICE.md](NOTICE.md)。
 

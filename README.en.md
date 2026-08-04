@@ -1,20 +1,58 @@
-# 🛡️ AntiFraudBot
+<p align="center">
+  <img src="src/web/frontend_v2/public/shield.svg" width="96" alt="AntiFraudBot shield logo" />
+</p>
 
-**An intelligent anti-fraud bot and security dashboard for QQ groups**
+<h1 align="center">AntiFraudBot</h1>
 
-[简体中文](README.md) · [English](README.en.md) · [Documentation](docs/en/README.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
+<p align="center">
+  <strong>An intelligent anti-fraud bot and security dashboard for QQ groups</strong><br />
+  <span>Connect risk detection, education, quizzes, AI analysis, and visual reporting in one deployable and extensible project.</span>
+</p>
 
-| Runtime | Bot protocol | Services and data | Dashboard | License |
-|---|---|---|---|---|
-| Python 3.9–3.12 | NoneBot2 + OneBot 11 | FastAPI + SQLAlchemy + SQLite | Vue 3 + Vite | [MIT](LICENSE) |
+<p align="center">
+  <a href="README.md">简体中文</a>
+  ·
+  <a href="README.en.md"><strong>English</strong></a>
+  ·
+  <a href="docs/en/README.md">Documentation</a>
+  ·
+  <a href="SECURITY.md">Security</a>
+  ·
+  <a href="CONTRIBUTING.md">Contributing</a>
+</p>
 
----
+<p align="center">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-0f766e" /></a>
+  <img alt="Python" src="https://img.shields.io/badge/python-3.9--3.12-111827?logo=python&amp;logoColor=white" />
+  <img alt="Bot framework" src="https://img.shields.io/badge/bot-NoneBot2%20%2B%20OneBot%2011-111827" />
+  <img alt="Dashboard" src="https://img.shields.io/badge/dashboard-Vue%203%20%2B%20Vite-0f766e" />
+  <img alt="Security" src="https://img.shields.io/badge/security-JWT%20%2B%20CORS-0891b2" />
+  <img alt="Validation" src="https://img.shields.io/badge/validation-pytest%20%2B%20build-14b8a6" />
+</p>
 
-**Quick navigation:** [Features](#-feature-map) · [Architecture](#️-architecture) · [Setup](#-five-minute-setup) · [Commands](#-common-commands) · [Security](#-security-model) · [Development](#-development-checks)
+![AntiFraudBot command center](docs/assets/dashboard-overview.jpg)
 
-## 🌟 Overview
+## Table of contents
 
-AntiFraudBot is an open-source **NoneBot2 + OneBot 11** project that combines chat risk detection, anti-fraud education, interactive quizzes, optional LLM analysis, and a secured web dashboard.
+- [Why it exists](#why-it-exists)
+- [Feature map](#feature-map)
+- [Bundled content](#bundled-content)
+- [Architecture](#architecture)
+- [Five-minute setup](#five-minute-setup)
+- [Common commands](#common-commands)
+- [Security model](#security-model)
+- [Development checks](#development-checks)
+- [Contributing](#contributing)
+- [Roadmap](#roadmap)
+- [License and responsible use](#license-and-responsible-use)
+
+## Why it exists
+
+Fraud risk in a group chat is rarely a single signal. Suspicious keywords, disguised links, manipulative language, and gaps in fraud awareness often appear together. A one-off warning cannot cover continuous education, interactive learning, event records, and later review.
+
+AntiFraudBot connects these needs in one extensible system: the bot detects and interacts inside group chats, the database keeps structured records, and secured APIs feed masked trends and risk information to the web command center. External AI and URL moderation remain optional, so missing service credentials never block the core local capabilities.
+
+> 🛡️ The goal is not to replace law enforcement, banks, or platform risk controls. It is to make risk alerts, anti-fraud education, and situational awareness more timely, continuous, and deployable.
 
 It is designed for:
 
@@ -28,7 +66,7 @@ It is designed for:
 > [!IMPORTANT]
 > AntiFraudBot is an assistive tool. It does not replace law enforcement, banks, platform risk controls, or professional legal advice. Stop and verify through an official channel whenever money, verification codes, credentials, or account control are involved.
 
-## ✨ Feature map
+## Feature map
 
 | Module | Capability | Status |
 |---|---|---|
@@ -42,7 +80,7 @@ It is designed for:
 | 🛠️ Management API | Keyword and quiz query/create/update/deactivate operations | ✅ Implemented; full management UI pending |
 | 📈 Forecast curve | Deterministic heuristic visualization | 🟡 Display aid, not a trained prediction model |
 
-### Bundled educational content
+## Bundled content
 
 - 🖼️ 53 anti-fraud knowledge images;
 - 📰 53 case-study text files;
@@ -51,7 +89,7 @@ It is designed for:
 
 Read [NOTICE.md](NOTICE.md) before redistributing bundled content. Deployers remain responsible for reviewing content against applicable law, platform rules, and local requirements.
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -80,7 +118,7 @@ AntiFraudBot/
 └── .env.prod.example             # Complete production configuration template
 ```
 
-## 🚀 Five-minute setup
+## Five-minute setup
 
 ### Requirements
 
@@ -151,7 +189,7 @@ The dashboard listens on loopback by default. Put it behind an HTTPS reverse pro
 
 See the complete [Installation Guide](docs/en/installation.md).
 
-## 🎮 Common commands
+## Common commands
 
 The effective prefix depends on `COMMAND_START`. With the default configuration:
 
@@ -169,7 +207,7 @@ The effective prefix depends on `COMMAND_START`. With the default configuration:
 
 See the [User Guide](docs/en/user-guide.md) for permissions and detailed behavior.
 
-## 🔐 Security model
+## Security model
 
 - Every dashboard business API requires a valid JWT; login is the only anonymous API.
 - Missing, short, or common default administrator passwords fail closed.
@@ -181,7 +219,7 @@ See the [User Guide](docs/en/user-guide.md) for permissions and detailed behavio
 
 Do not disclose vulnerabilities in public issues. Follow [SECURITY.md](SECURITY.md) and use GitHub Private Vulnerability Reporting.
 
-## 🧪 Development checks
+## Development checks
 
 ```bash
 poetry run pytest -q
@@ -195,7 +233,7 @@ npm run build
 
 Read the [Developer Guide](docs/en/development.md) for architecture, APIs, and plugin conventions.
 
-## 🤝 Contributing
+## Contributing
 
 Bug fixes, educational content, documentation, adapters, and security improvements are welcome. Before opening a pull request:
 
@@ -204,7 +242,7 @@ Bug fixes, educational content, documentation, adapters, and security improvemen
 3. add tests and bilingual documentation for behavior changes;
 4. report the exact verification commands and results.
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] complete keyword and quiz management UI;
 - [ ] pluggable OCR and vector retrieval;
@@ -213,7 +251,7 @@ Bug fixes, educational content, documentation, adapters, and security improvemen
 - [ ] reproducible detection evaluation datasets;
 - [ ] container deployment after end-to-end validation.
 
-## 📜 License and responsible use
+## License and responsible use
 
 Project code is licensed under the [MIT License](LICENSE). Bundled content and third-party service considerations are described in [NOTICE.md](NOTICE.md).
 
