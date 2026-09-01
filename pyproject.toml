@@ -40,7 +40,7 @@ nonebot-plugin-apscheduler = ["nonebot_plugin_apscheduler"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0.0"
-ruff = ">=0.12.0"
+ruff = ">=0.16.5"
 
 [tool.ruff]
 target-version = "py39"
