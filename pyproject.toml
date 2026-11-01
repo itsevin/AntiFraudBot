@@ -15,7 +15,7 @@ dependencies = [
     "ujson>=5.10.0",
     "pydantic==1.10.21",
     "alibabacloud-green20220302==2.2.0",
-    "nonebot-plugin-orm[sqlite]>=0.8.3,<0.9.0",
+    "nonebot-plugin-orm[sqlite]>=0.8.4,<0.9.0",
     "python-jose[cryptography]>=3.3.0,<4.0.0",
     "python-multipart>=0.0.9,<0.0.10",
     "uvicorn>=0.30.0",
@@ -40,7 +40,7 @@ nonebot-plugin-apscheduler = ["nonebot_plugin_apscheduler"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0.0"
-ruff = ">=0.12.0"
+ruff = ">=0.17.3"
 
 [tool.ruff]
 target-version = "py39"
